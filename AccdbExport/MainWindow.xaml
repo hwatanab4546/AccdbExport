@@ -1,0 +1,49 @@
+﻿<Window x:Class="AccdbExport.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:wpf="clr-namespace:hwatanab4546.Wpf"
+        xmlns:local="clr-namespace:AccdbExport"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <AdornerDecorator
+            Grid.Row="0">
+            <TextBox
+                Margin="10,10,10,5" Height="20"
+                Text="{Binding AccdbPath.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                IsEnabled="{Binding IsBusy.Value, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}">
+                <bhv:Interaction.Behaviors>
+                    <wpf:WatermarkedTextBoxBehavior WatermarkText="Accdbファイルのパス名を入力してください" />
+                    <wpf:DragDropTextBoxBehavior />
+                </bhv:Interaction.Behaviors>
+            </TextBox>
+        </AdornerDecorator>
+        <Button
+            Grid.Row="1"
+            Margin="10,5,10,10" Width="100" Height="20"
+            Content="Run"
+            Command="{Binding RunCommand, Mode=OneWay}" />
+        <StatusBar
+            Grid.Row="3">
+            <ProgressBar
+                Width="100"
+                Height="20"
+                IsIndeterminate="{Binding IsBusy.Value, Mode=OneWay}" />
+            <Separator />
+            <TextBlock
+                Text="{Binding Status.Value, Mode=OneWay}" />
+        </StatusBar>
+    </Grid>
+</Window>
